@@ -1,8 +1,15 @@
-export function add(a: number, b: number): number {
-  return a + b;
+import bolt11 from "bolt11";
+
+/** Decodes the invoice and returns the amount in millisatoshis */
+function getAmount(invoice: string | undefined): string | undefined {
+  if (!invoice) return;
+  try {
+    const decoded = bolt11.decode(invoice);
+    return decoded?.millisatoshis ?? undefined;
+  } catch (e) {
+    console.log(e);
+    return;
+  }
 }
 
-// Learn more at https://deno.land/manual/examples/module_metadata#concepts
-if (import.meta.main) {
-  console.log("Add 2 + 3 =", add(2, 3));
-}
+export { getAmount };
